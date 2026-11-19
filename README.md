@@ -21,7 +21,7 @@ NanjAI is a bilingual (English and Tamil) retrieval-augmented generation (RAG) a
 - **Vector database:** FAISS (`faiss-cpu`)
 - **Embeddings and answer generation:** OpenAI API through LangChain
 
-> **Data and privacy note:** Uploaded PDFs, extracted text, and the FAISS index are stored locally in this project. OpenAI is used to create embeddings and generate answers, so document text sent for embedding, retrieved excerpts, and questions are sent to the OpenAI API. This version is not fully offline or fully on-premises. Keep the API key private and do not commit `.env`.
+> **Data and privacy note:** The app stores uploaded PDFs and the FAISS index under `data/`. This repository currently includes PDFs in `Uploaded_PDF/`, copies of uploaded PDFs under `data/uploads/`, and a saved FAISS index under `data/faiss_index/`. New uploads on a user's computer are not automatically sent to GitHub. OpenAI is used to create embeddings and generate answers, so document text sent for embedding, retrieved excerpts, and questions are sent to the OpenAI API. This version is not fully offline or fully on-premises. Keep the API key private and do not commit `.env`.
 
 ## Requirements
 
@@ -31,27 +31,29 @@ NanjAI is a bilingual (English and Tamil) retrieval-augmented generation (RAG) a
 
 ## Setup in Windows CMD
 
-Open CMD and change to the project folder:
+Make sure Git and Python are installed. Open CMD and run these commands to clone this public repository into a folder named `NanjAI` under your Windows user folder:
 
 ```cmd
-cd /d "C:\Users\Ruby B\Assignment_WK2_Bulidathon_NanjAI APP"
+cd /d "%USERPROFILE%"
+git clone https://github.com/rubykbala/Bulidathon1_NanjAI-APP.git NanjAI
+cd NanjAI
 ```
 
-Create and activate a virtual environment:
+Create and activate a virtual environment dedicated to this project:
 
 ```cmd
 py -m venv .venv
 .venv\Scripts\activate
 ```
 
-Install the Python packages:
+Install the packages listed for NanjAI:
 
 ```cmd
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-Create a `.env` file in the project root if one does not already exist. Add your own key (do not include quotation marks):
+Create a `.env` file in the `NanjAI` project folder. Add your own OpenAI API key without quotation marks. Do not share or commit this file:
 
 ```text
 OPENAI_API_KEY=your_openai_api_key
@@ -61,18 +63,18 @@ The application defaults to `text-embedding-3-small` for embeddings and `gpt-4o-
 
 ## Run NanjAI
 
-Keep two CMD windows open. In **CMD window 1**, activate the environment and start FastAPI:
+Keep both CMD windows open while using the app. In **CMD window 1**, go to the cloned project folder, activate its virtual environment, and start the FastAPI backend:
 
 ```cmd
-cd /d "C:\Users\Ruby B\Assignment_WK2_Bulidathon_NanjAI APP"
+cd /d "%USERPROFILE%\NanjAI"
 .venv\Scripts\activate
 uvicorn app.main:app --reload
 ```
 
-In **CMD window 2**, activate the environment and start Streamlit:
+In **CMD window 2**, go to the same project folder, activate its virtual environment, and start the Streamlit interface:
 
 ```cmd
-cd /d "C:\Users\Ruby B\Assignment_WK2_Bulidathon_NanjAI APP"
+cd /d "%USERPROFILE%\NanjAI"
 .venv\Scripts\activate
 streamlit run app/ui.py
 ```
@@ -87,7 +89,7 @@ Open the Streamlit URL shown in CMD (usually `http://localhost:8501`). FastAPI's
 4. In **Ask about a scheme**, ask about details present in the uploaded PDFs.
 5. Review the answer and its cited PDF pages. Choose a language before asking to receive the new answer in that language.
 
-The FAISS index is saved under `data/faiss_index/`; uploaded PDFs are saved under `data/uploads/`. These files persist between runs on this computer. If the local `data/` folder is removed, the PDFs must be uploaded and indexed again.
+The FAISS index is saved under `data/faiss_index/`; uploaded PDFs are saved under `data/uploads/`. The repository currently includes a saved index and uploaded PDFs in these locations. New uploads persist on the computer running the app; they are not automatically committed to GitHub. If the local `data/` folder is removed, upload and index the PDFs again.
 
 ## RAG flow
 
@@ -123,11 +125,12 @@ NanjAI/
 │   ├── rag.py        # PDF ingestion, chunking, FAISS, retrieval, and answers
 │   └── ui.py         # Streamlit interface
 ├── assets/           # Local UI image assets and photo credit
+├── Uploaded_PDF/    # Source scheme PDFs included in the repository
 ├── data/
-│   ├── uploads/      # Uploaded PDFs (created/used locally)
-│   └── faiss_index/  # Persistent FAISS files (created/used locally)
+│   ├── uploads/      # Uploaded PDF copies (currently included in this repository)
+│   └── faiss_index/  # Persisted FAISS files (currently included in this repository)
 ├── requirements.txt
-├── .env              # Local API key; do not commit
+├── .env              # Create locally with your API key; do not commit
 └── README.md
 ```
 
